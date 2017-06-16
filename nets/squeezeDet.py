@@ -18,7 +18,13 @@ from nn_skeleton import ModelSkeleton
 
 class SqueezeDet(ModelSkeleton):
   def __init__(self, mc, gpu_id=0):
-    with tf.device('/gpu:{}'.format(gpu_id)):
+    if gpu_id < 0:
+        device_set = '/cpu:{}'.format(0)
+    else:
+        device_set = '/gpu:{}'.format(gpu_id)
+        print('device set '+device_set)
+    #with tf.device('/gpu:{}'.format(gpu_id)):
+    with tf.device(device_set):
       ModelSkeleton.__init__(self, mc)
 
       self._add_forward_graph()
